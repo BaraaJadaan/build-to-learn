@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PROJECT_TITLE}} — Interview Q&amp;A</title>
+<style>
+  :root {
+    --paper: #FBFAF6;
+    --dot: #DEDACE;
+    --ink: #1B2622;
+    --ink-soft: #566058;
+    --ink-faint: #8B9389;
+    --rule: #DAD5C7;
+    --card: #FFFFFF;
+    --technical: #AD7233;
+    --technical-soft: #EDE0CC;
+    --trick: #8B3A2F;
+    --trick-soft: #F1DCD7;
+    --general: #3E5C76;
+    --general-soft: #DCE3EA;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    --sans: -apple-system, "Segoe UI", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: radial-gradient(circle, var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    padding-bottom: 8rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+  button { font-family: inherit; }
+  :focus-visible { outline: 2px solid var(--technical); outline-offset: 2px; }
+
+  header.masthead {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--technical);
+    margin: 0 0 0.9rem;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0 0 0.6rem;
+  }
+  p.tagline {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    color: var(--ink-soft);
+    margin: 0 0 1.1rem;
+    max-width: 46ch;
+  }
+  p.meta {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.8rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .chip.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  #random-btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #random-btn:hover { opacity: 0.85; }
+
+  main#qa-list { padding-top: 1.4rem; }
+
+  #empty-state {
+    margin: 3rem 0;
+    padding: 2rem;
+    border: 1px dashed var(--rule);
+    border-radius: 10px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  article.qa-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.6rem 1.7rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 6rem;
+    transition: box-shadow 0.3s ease;
+  }
+  article.qa-card.pulse { box-shadow: 0 0 0 3px var(--technical); }
+
+  .eyebrow { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.7rem; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    background: var(--technical-soft);
+    color: var(--technical);
+  }
+  .qa-card[data-category="trick"] .tag { background: var(--trick-soft); color: var(--trick); }
+  .qa-card[data-category="general"] .tag { background: var(--general-soft); color: var(--general); }
+  .num {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+
+  h2.question {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+    margin: 0 0 1rem;
+  }
+
+  .reveal-btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.4rem 0.95rem;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .reveal-btn:hover { background: var(--ink); color: var(--paper); }
+
+  .answer {
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px dashed var(--rule);
+    color: var(--ink);
+  }
+  .answer p { margin: 0 0 0.8rem; }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer .misconception {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--trick);
+    margin: 0 0 0.4rem;
+  }
+
+  .rate-btns {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px dashed var(--rule);
+  }
+  .rate-btn {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .rate-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .rate-btn.rate-good.active { background: var(--general-soft); border-color: var(--general); color: var(--general); }
+  .rate-btn.rate-review.active { background: var(--trick-soft); border-color: var(--trick); color: var(--trick); }
+  article.qa-card[data-reviewed="review"] { border-left: 3px solid var(--trick); }
+  article.qa-card[data-reviewed="good"] { border-left: 3px solid var(--general); }
+
+  #review-toggle {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: none;
+    white-space: nowrap;
+  }
+  #review-toggle.active { background: var(--trick); border-color: var(--trick); color: var(--paper); }
+
+  @media (max-width: 520px) {
+    .controls { flex-direction: column; align-items: stretch; }
+    #random-btn { width: 100%; }
+  }
+
+  @media print {
+    body { background-image: none; }
+    .controls { display: none; }
+    .reveal-btn { display: none; }
+    .answer[hidden] { display: block !important; }
+    .rate-btns { display: none; }
+    article.qa-card { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Interview Prep</p>
+    <h1>{{PROJECT_TITLE}}</h1>
+    <p class="tagline">Questions a sharp interviewer would actually ask about this project — with the answer that proves it was really built, not just followed.</p>
+    <p class="meta"><span id="q-count">0</span> questions logged</p>
+  </header>
+
+  <div class="controls">
+    <div class="filters" id="filters" aria-label="Filter by category"></div>
+    <button id="review-toggle" type="button" title="Resets on reload — a one-sitting study aid, not saved progress">Needs review only</button>
+    <button id="random-btn" type="button">Quiz me at random →</button>
+  </div>
+
+  <main id="qa-list">
+    <div id="empty-state">
+      No questions logged yet. As real decisions get made while building, the questions an
+      interviewer would ask about them land here — technical-decision questions, the
+      occasional trick question, and the bigger whole-project questions once there's enough
+      built to reflect on.
+    </div>
+
+    <!--
+      CARD SCHEMA — copy this exact block for every new question, fill every field, then
+      insert it immediately above the insertion-point marker near the bottom of this file.
+      No need to touch the #empty-state message above, or the filter bar and quiz button —
+      the script shows and hides all three automatically depending on whether a card exists
+      yet. The .num span, the question count, and the filter chips are also filled in
+      automatically — never hand-write question numbers or maintain a separate category
+      list.
+
+      data-category is exactly one of:
+        technical  — a real "why X, not Y" decision, with the concrete tradeoff
+        trick      — corrects a plausible-sounding but wrong assumption, and explains the
+                     real mechanism, not just "wrong, next question"
+        general    — whole-project reflection: architecture, dataset/tooling rationale,
+                     struggles, scaling, what you'd change (see references/writing_great_
+                     questions.md for the shape of a strong answer to each of these)
+
+    <article class="qa-card" data-category="technical">
+      <p class="eyebrow"><span class="tag">Technical Decision</span><span class="num"></span></p>
+      <h2 class="question">Why did you choose X over Y?</h2>
+      <button class="reveal-btn" type="button" aria-expanded="false">Show answer</button>
+      <div class="answer" hidden>
+        <p>Direct answer in one sentence, then the concrete reasoning (2-4 sentences: the
+        actual tradeoff, not vibes), then the honest limitation of the choice — the
+        situation where you'd pick differently. For a trick question, put a one-line
+        <span class="misconception">Common misconception</span> note before the correction.</p>
+        <div class="rate-btns">
+          <button class="rate-btn rate-good" type="button">Got it</button>
+          <button class="rate-btn rate-review" type="button">Review again</button>
+        </div>
+      </div>
+    </article>
+
+    -->
+
+    <!-- The rate-btns block above is session-only self-assessment (no data is saved anywhere
+    — it resets on reload, on purpose, so this file keeps working as a plain offline
+    document). Always include it exactly as shown; the script below wires it up. -->
+
+    <!-- NEW_QA_INSERTION_POINT: insert new <article class="qa-card"> blocks immediately above this line, in the order the underlying decisions were made. -->
+  </main>
+
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.qa-card'));
+  document.getElementById('q-count').textContent = cards.length;
+  document.getElementById('empty-state').style.display = cards.length ? 'none' : '';
+
+  var labels = { technical: 'Technical Decision', trick: 'Trick Question', general: 'General' };
+  var activeFilter = 'all';
+
+  cards.forEach(function (c, i) {
+    var num = 'Q' + String(i + 1).padStart(3, '0');
+    var numEl = c.querySelector('.num');
+    if (numEl) numEl.textContent = num;
+    c.id = num;
+  });
+
+  var revealBtns = document.querySelectorAll('.reveal-btn');
+  revealBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var answer = btn.nextElementSibling;
+      var hidden = answer.hasAttribute('hidden');
+      if (hidden) {
+        answer.removeAttribute('hidden');
+        btn.textContent = 'Hide answer';
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        answer.setAttribute('hidden', '');
+        btn.textContent = 'Show answer';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  var reviewToggle = document.getElementById('review-toggle');
+  var reviewOnly = false;
+
+  document.querySelectorAll('.rate-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card = btn.closest('.qa-card');
+      var wantsReview = btn.classList.contains('rate-review');
+      card.setAttribute('data-reviewed', wantsReview ? 'review' : 'good');
+      card.querySelectorAll('.rate-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      if (!reviewToggle.style.display || reviewToggle.style.display === 'none') {
+        reviewToggle.style.display = '';
+      }
+      applyFilter();
+    });
+  });
+
+  reviewToggle.addEventListener('click', function () {
+    reviewOnly = !reviewOnly;
+    reviewToggle.classList.toggle('active', reviewOnly);
+    applyFilter();
+  });
+
+  var filterBar = document.getElementById('filters');
+  var randomBtn = document.getElementById('random-btn');
+
+  function renderFilters() {
+    filterBar.innerHTML = '';
+    var categories = [];
+    cards.forEach(function (c) {
+      var cat = c.getAttribute('data-category');
+      if (categories.indexOf(cat) === -1) categories.push(cat);
+    });
+
+    var all = document.createElement('button');
+    all.type = 'button';
+    all.className = 'chip' + (activeFilter === 'all' ? ' active' : '');
+    all.textContent = 'All (' + cards.length + ')';
+    all.addEventListener('click', function () { activeFilter = 'all'; applyFilter(); renderFilters(); });
+    filterBar.appendChild(all);
+
+    categories.forEach(function (cat) {
+      var count = cards.filter(function (c) { return c.getAttribute('data-category') === cat; }).length;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (activeFilter === cat ? ' active' : '');
+      b.textContent = (labels[cat] || cat) + ' (' + count + ')';
+      b.addEventListener('click', function () { activeFilter = cat; applyFilter(); renderFilters(); });
+      filterBar.appendChild(b);
+    });
+  }
+
+  function applyFilter() {
+    cards.forEach(function (c) {
+      var categoryMatch = activeFilter === 'all' || c.getAttribute('data-category') === activeFilter;
+      var reviewMatch = !reviewOnly || c.getAttribute('data-reviewed') === 'review';
+      c.style.display = (categoryMatch && reviewMatch) ? '' : 'none';
+    });
+  }
+
+  randomBtn.addEventListener('click', function () {
+    var visible = cards.filter(function (c) { return c.style.display !== 'none'; });
+    if (!visible.length) return;
+    document.querySelectorAll('.answer').forEach(function (a) { a.setAttribute('hidden', ''); });
+    revealBtns.forEach(function (b) { b.textContent = 'Show answer'; b.setAttribute('aria-expanded', 'false'); });
+    var pick = visible[Math.floor(Math.random() * visible.length)];
+    pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    pick.classList.add('pulse');
+    setTimeout(function () { pick.classList.remove('pulse'); }, 1400);
+  });
+
+  if (!cards.length) {
+    document.querySelector('.controls').style.display = 'none';
+  } else {
+    renderFilters();
+    applyFilter();
+  }
+})();
+</script>
+</body>
+</html>
