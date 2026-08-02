@@ -19,6 +19,7 @@ _Real things that didn't work on the first try, logged the moment they happen �
 ## Companion docs
 - `concepts.html` — {{N}} entries
 - `interview_qa.html` — {{N}} questions
+- `walkthrough.html` — {{N}} phase beats
 
 ## Mock interview weak spots
 _Filled in after a live mock interview (SKILL.md section 7) — which questions needed work

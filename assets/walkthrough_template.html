@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PROJECT_TITLE}} — Walkthrough</title>
+<style>
+  :root {
+    --paper: #FBFAF6;
+    --dot: #DEDACE;
+    --ink: #1B2622;
+    --ink-soft: #566058;
+    --ink-faint: #8B9389;
+    --accent: #AD7233;
+    --rule: #DAD5C7;
+    --card: #FFFFFF;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    --sans: -apple-system, "Segoe UI", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: radial-gradient(circle, var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.75;
+    padding-bottom: 8rem;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 0 1.5rem; }
+
+  header.masthead {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.9rem;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0 0 0.6rem;
+  }
+  p.tagline {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    color: var(--ink-soft);
+    margin: 0 0 1.1rem;
+    max-width: 46ch;
+  }
+  p.meta {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  nav.index {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.7rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+  nav.index a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    background: var(--card);
+    white-space: nowrap;
+  }
+  nav.index a:hover, nav.index a:focus-visible { border-color: var(--accent); color: var(--accent); }
+
+  main#story { padding-top: 1.6rem; }
+
+  #empty-state {
+    margin: 3rem 0;
+    padding: 2rem;
+    border: 1px dashed var(--rule);
+    border-radius: 10px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  h2.phase-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+    margin: 2.4rem 0 1rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid var(--rule);
+  }
+  h2.phase-title:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .phase-num {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  p.beat {
+    margin: 0 0 1.05rem;
+    font-size: clamp(1rem, 1.05vw, 1.08rem);
+    color: var(--ink);
+  }
+
+  @media (max-width: 520px) {
+    nav.index { gap: 0.35rem 0.5rem; }
+  }
+
+  @media print {
+    body { background-image: none; }
+    nav.index { display: none; }
+    h2.phase-title { break-after: avoid; }
+    p.beat { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Walkthrough</p>
+    <h1 id="project-title">{{PROJECT_TITLE}}</h1>
+    <p class="tagline">The short version — what got built, roughly in order. Read this
+    first if someone asks "walk me through this project."</p>
+    <p class="meta">~<span id="read-time">0</span> min read · <span id="phase-count">0</span> phases</p>
+  </header>
+
+  <nav class="index" id="phase-index" aria-label="Jump to phase"></nav>
+
+  <main id="story">
+    <div id="empty-state">
+      No story yet. As phases wrap up while building, a few plain sentences land here
+      describing what actually happened in that phase — read start to finish, it should
+      sound like someone explaining the project out loud, not a changelog.
+    </div>
+
+    <!--
+      BEAT SCHEMA — copy this exact block for a new narrative beat, fill it in, then insert
+      it immediately above the insertion-point marker near the bottom of this file. Write it
+      the way you'd actually say it out loud if someone asked "walk me through this
+      project" — plain and technical, real tool/technique names are expected, but no code
+      and no implementation detail; that depth belongs in concepts.html and
+      interview_qa.html, not here. One or two sentences per beat is usually right. Update
+      this roughly once per PHASE, when that phase wraps up, condensing what mattered in
+      it — not once per build-loop step. This document only works if it stays short enough
+      to read in a few minutes. The phase heading, its numbering, and the phase-jump nav are
+      all built automatically by the script below from the data-phase attribute — never
+      hand-write a phase heading.
+
+      <p class="beat" data-phase="Phase name, e.g. Core Architecture">We [did the thing],
+      then [did the next thing], because [the rough reason] — plain sentences, real
+      technical nouns (tool names, technique names) are good, implementation detail and
+      code are not.</p>
+
+      -->
+
+    <!-- NEW_BEAT_INSERTION_POINT: insert new <p class="beat"> elements immediately above this line, in the order phases actually happened. -->
+  </main>
+
+</div>
+
+<script>
+(function () {
+  var beats = Array.prototype.slice.call(document.querySelectorAll('.beat'));
+  document.getElementById('empty-state').style.display = beats.length ? 'none' : '';
+
+  var container = document.getElementById('story');
+  var nav = document.getElementById('phase-index');
+  var seenPhases = [];
+  var lastPhase = null;
+  var sectionCount = 0;
+
+  beats.forEach(function (beat) {
+    var phase = beat.getAttribute('data-phase') || 'General';
+    if (phase !== lastPhase) {
+      sectionCount++;
+      var isNewPhase = seenPhases.indexOf(phase) === -1;
+      if (isNewPhase) seenPhases.push(phase);
+      var phaseNum = seenPhases.indexOf(phase) + 1;
+
+      var h2 = document.createElement('h2');
+      h2.className = 'phase-title';
+      h2.id = 'section-' + sectionCount;
+      var numSpan = document.createElement('span');
+      numSpan.className = 'phase-num';
+      numSpan.textContent = 'PHASE ' + phaseNum;
+      h2.appendChild(numSpan);
+      h2.appendChild(document.createTextNode(phase));
+      container.insertBefore(h2, beat);
+
+      if (isNewPhase) {
+        var a = document.createElement('a');
+        a.href = '#section-' + sectionCount;
+        a.textContent = phase;
+        nav.appendChild(a);
+      }
+      lastPhase = phase;
+    }
+  });
+
+  var allText = beats.map(function (b) { return b.textContent; }).join(' ').trim();
+  var wordCount = allText ? allText.split(/\s+/).length : 0;
+  document.getElementById('read-time').textContent = beats.length ? Math.max(1, Math.round(wordCount / 200)) : '0';
+  document.getElementById('phase-count').textContent = seenPhases.length;
+
+  if (!beats.length) nav.style.display = 'none';
+})();
+</script>
+</body>
+</html>

@@ -1,10 +1,10 @@
 # A worked example, end to end
 
-The schema comments inside the two templates show the *shape* of an entry with placeholder
-text. This shows what one real build-loop step actually produced, on a real (if small) demo
-project — for calibration on depth and tone, not something to copy into a real project
-verbatim. If you're about to write your first entries and want a concrete bar to match
-before diffing yourself against it, read this first.
+The schema comments inside the three templates show the *shape* of an entry with
+placeholder text. This shows what one real build-loop step actually produced, on a real (if
+small) demo project — for calibration on depth and tone, not something to copy into a real
+project verbatim. If you're about to write your first entries and want a concrete bar to
+match before diffing yourself against it, read this first.
 
 **The situation:** a demo project (a distributed rate limiter for a public API gateway —
 deliberately backend/systems, not ML, since this skill isn't domain-specific). The step was
@@ -12,6 +12,9 @@ the core architecture decision: which rate-limiting algorithm, and how to share 
 multiple gateway instances. That one step produced two `concepts.html` entries and three
 `interview_qa.html` cards — this is roughly the right density for a single step; it should
 not take ten entries to cover one step, and it shouldn't take ten steps to produce one entry.
+The `walkthrough.html` example below shows something different on purpose: not this one
+step, but the *whole phase* this step belonged to, condensed into the couple of sentences
+that would actually get logged when the phase wrapped.
 
 ## What landed in concepts.html
 
@@ -143,6 +146,35 @@ limit of that correction (it *does* eventually become true at high enough volume
 three-part shape — misconception, correction, honest boundary — is what separates this from
 a gotcha.
 
+## What landed in walkthrough.html
+
+This is the same project, further along — two phases in, not one step. Notice how much got
+left out compared to the two documents above: no mention of Lua scripts, no boundary-flaw
+mechanics, none of the "why" detail that made the concepts and Q&A entries useful. That
+detail didn't get lost, it's just not this document's job — someone who wants it can ask a
+follow-up, which `interview_qa.html` is ready for. This one just has to get the shape of the
+story right.
+
+```html
+    <p class="beat" data-phase="Environment & Tooling">We set up a small FastAPI gateway
+    service, a Redis instance for shared state, and a k6 load-testing harness up front, so
+    rate-limiting behavior could be checked under realistic concurrent traffic from the
+    start instead of being an afterthought.</p>
+
+    <p class="beat" data-phase="Core Architecture">We compared token bucket, fixed window,
+    and sliding window log algorithms and picked token bucket for handling realistic bursty
+    traffic without the boundary flaw a fixed window has. Since the gateway runs as multiple
+    instances behind a load balancer, we moved the counters into a shared Redis store
+    instead of per-instance memory, using a single atomic Lua script so two concurrent
+    requests can't both slip through on the same last token.</p>
+```
+
+Read those two beats back to back: that's the test. It should sound like the first thirty
+seconds of an answer to "walk me through this project" — plain, in order, technical without
+being deep. If a beat needs a follow-up sentence to make sense on its own, it's too
+compressed; if it starts explaining *why* at the level the Q&A entries do, it's not
+compressed enough.
+
 ## What the matching PROGRESS.md looked like at this point
 
 ```markdown
@@ -152,7 +184,7 @@ a gotcha.
 Demo walkthrough of the Build to Learn skill — backend/systems domain, to show the mechanics work outside AI/ML projects too.
 
 ## Why this idea
-Chosen to prove the skill's build loop and both companion docs work for a different kind of project than a RAG/ML pipeline — same mechanics, different domain.
+Chosen to prove the skill's build loop and all three companion docs work for a different kind of project than a RAG/ML pipeline — same mechanics, different domain.
 
 ## Phase roadmap
 - [x] Phase 1 — Environment & tooling setup
@@ -169,6 +201,7 @@ Chosen to prove the skill's build loop and both companion docs work for a differ
 ## Companion docs
 - `concepts.html` — 2 entries
 - `interview_qa.html` — 3 questions
+- `walkthrough.html` — 2 phase beats
 ```
 
 Note the friction-log entry: it's specific enough to actually answer an interview question

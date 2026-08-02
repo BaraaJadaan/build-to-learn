@@ -2,7 +2,8 @@
 
 A [Claude Skill](https://www.anthropic.com/news/skills) that builds a real technical
 project with you, gradually, the way it would actually get built in production — and, at
-the same time, produces two living documents so you can defend every decision in it. Works
+the same time, produces three living documents so you can defend every decision in it, and
+give a clean two-minute answer when someone just asks you to walk them through it. Works
 just as well on a project you already finished, if it needs the interview-readiness layer
 added after the fact. By the end you have a working project and the ability to explain it
 in an interview, not just the memory of having followed a tutorial.
@@ -29,10 +30,15 @@ adding another few hours of watch-time.
    instead of just being clever, and whole-project questions — each with a complete model
    answer. Filterable by category, with a "quiz me at random" mode and session self-rating
    ("got it" / "review again") for active-recall practice.
+4. **`walkthrough.html`** — the two-minute version: a handful of plain, technical sentences
+   per phase, updated once a phase wraps rather than every step. Answers the question that
+   opens almost every interview about a project, before any of the pointed ones: *"walk me
+   through this, roughly, how'd you build it?"* No code, no implementation detail — that's
+   what the other two are for.
 
 See [`examples/demo-rate-limiter`](examples/demo-rate-limiter) for a small worked example —
-open `concepts.html` and `interview_qa.html` in a browser to see the actual output, not just
-a description of it.
+open the three HTML files in a browser to see the actual output, not just a description of
+it.
 
 ## How it works
 
@@ -50,8 +56,9 @@ a description of it.
    implementation comes up, it asks whether to build it for you while narrating, or let you
    write it with it reviewing — a working project matters, but so does hands-on practice
    with the stack, and those aren't always the same thing. Each step is sized to introduce
-   at most one or two new ideas at a time, and both docs grow alongside the code, not after
-   it.
+   at most one or two new ideas at a time; `concepts.html` and `interview_qa.html` grow
+   alongside the code as those ideas and decisions come up, and `walkthrough.html` picks up
+   one short beat each time a phase wraps.
 5. **Wrap-up.** A pass that fills any gaps, adds the questions that only make sense once the
    whole project exists, and offers a live mock interview pulled straight from
    `interview_qa.html` — one that remembers which questions were shaky last time and starts
@@ -85,8 +92,8 @@ Once it's enabled, just ask for what you want:
 > *"I already built this last year — can you help me get interview-ready about it without
 > rebuilding it?"*
 
-> *"I've got `PROGRESS.md` and the two docs from a project I started earlier — let's pick
-> it back up."*
+> *"I've got `PROGRESS.md` and the docs from a project I started earlier — let's pick it
+> back up."*
 
 The skill asks a few questions up front, then works with you in small, checked-in chunks
 rather than one huge dump of work.
@@ -99,6 +106,7 @@ build-to-learn/
 ├── assets/
 │   ├── concepts_template.html        starting point for concepts.html (already designed)
 │   ├── qa_template.html              starting point for interview_qa.html (already designed)
+│   ├── walkthrough_template.html     starting point for walkthrough.html (already designed)
 │   └── progress_template.md          starting point for PROGRESS.md
 ├── references/
 │   ├── writing_great_questions.md    how to write a trick question that teaches, not a gotcha
@@ -107,7 +115,7 @@ build-to-learn/
     └── demo-rate-limiter/            a small filled-in example — open the HTML files
 ```
 
-The two HTML templates are self-contained (no external fonts, no CDN dependencies, no
+The three HTML templates are self-contained (no external fonts, no CDN dependencies, no
 `localStorage`), so they keep working as plain files long after the conversation that built
 them is gone — open them on a plane, print them, keep them next to your resume.
 
@@ -116,10 +124,15 @@ them is gone — open them on a plane, print them, keep them next to your resume
 A few decisions that aren't obvious from skimming `SKILL.md`, in case you're extending it:
 
 - **The HTML/CSS/JS is copied, never regenerated.** The filters, the reveal-to-answer
-  mechanic, and the design are already built into the two templates; the skill's job is to
+  mechanic, and the design are already built into the three templates; the skill's job is to
   fill them in, not redesign them. This is what makes the output consistent across
   different sessions and different models, instead of a fresh, different-quality result
   every time.
+- **`walkthrough.html` is deliberately the least sophisticated of the three.** No filters,
+  no quiz mode, nothing to click — just phase headings and plain paragraphs, meant to be
+  read start to finish in a couple of minutes. It updates once per phase, not once per step,
+  on purpose: the other two documents already cover depth, this one's only job is being
+  short enough to actually get read before an interview.
 - **Every project gets its own folder**, named from the project's slug, so using this
   repeatedly over time doesn't produce colliding, same-named files.
 - **The skill never overwrites an existing project's files.** Data safety is treated as a

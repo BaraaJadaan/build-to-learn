@@ -6,7 +6,7 @@ description: >
   scratch.
 compatibility: >
   Needs web search for the "what's actually current" research, and file-creation tools to
-  produce the project and the two HTML companion docs. Works best with a tappable-question
+  produce the project and the three HTML companion docs. Works best with a tappable-question
   tool (e.g. ask_user_input_v0) during kickoff, but degrades fine to plain chat questions.
 ---
 
@@ -34,24 +34,30 @@ description above is kept short on purpose — Claude.ai caps skill descriptions
 characters even though the underlying Agent Skills spec allows more — so this paragraph is
 where the fuller trigger picture actually lives.
 
-Two documents grow alongside the project the whole way through:
+Three documents grow alongside the project the whole way through:
 
 - **`concepts.html`** — every genuinely new idea the build introduces, explained plainly,
   the moment it shows up.
 - **`interview_qa.html`** — the questions a sharp interviewer would actually ask about the
   project, each with the answer that proves real ownership, added as the decisions behind
   them get made.
+- **`walkthrough.html`** — the two-minute version. A handful of plain, technical sentences
+  per phase, updated once a phase wraps up rather than every step, answering the question
+  that opens almost every interview about a project before any of the pointed ones do:
+  *"walk me through this, roughly, how did you build it?"* No code, no implementation
+  detail — that's what the other two are for. This one has to stay short enough to actually
+  read in a few minutes, or it fails at the one thing it's for.
 
-Both already exist as finished, designed files at `assets/concepts_template.html` and
-`assets/qa_template.html` — full CSS, the reveal-to-answer mechanic, category filters,
-session-only self-rating, a "quiz me at random" button, auto-numbering, all working.
-**Building this skill's version of these documents means copying those two files and
-filling them in — never regenerating the HTML/CSS/JS from a description of what they should
-contain.** That's not a style preference; it's what makes the two docs look and behave the
-same way every time this skill runs, regardless of which model is running it. See section 6
-for the exact mechanics.
+All three already exist as finished, designed files at `assets/concepts_template.html`,
+`assets/qa_template.html`, and `assets/walkthrough_template.html` — full CSS, the
+reveal-to-answer mechanic, category filters, session-only self-rating, a "quiz me at random"
+button, auto-numbering, all working. **Building this skill's version of these documents
+means copying those three files and filling them in — never regenerating the HTML/CSS/JS
+from a description of what they should contain.** That's not a style preference; it's what
+makes the docs look and behave the same way every time this skill runs, regardless of which
+model is running it. See section 6 for the exact mechanics.
 
-Neither document is a wrap-up task. If you reach the end of the project and these are still
+None of the three is a wrap-up task. If you reach the end of the project and they're still
 thin, something went wrong earlier — go back and fix it, don't try to reconstruct months of
 reasoning in one sitting at the end.
 
@@ -64,12 +70,12 @@ gets locked — see section 3), specifically so that using this skill many times
 years doesn't leave a pile of same-named files that collide or get confused with each other.
 
 - **One or more project folders already exist** (each has its own `PROGRESS.md`,
-  `concepts.html`, and `interview_qa.html`) **→ this is a resume.** Exactly one → resume it.
-  More than one → ask which, don't guess. Read that project's `PROGRESS.md` first (goal,
-  why this idea, the phase checklist, the friction log — format below), then skim the most
-  recent entries in both HTML docs to see exactly where things left off. Pick the build loop
-  (section 5) back up at the next unchecked phase. Don't re-run the kickoff or re-ask
-  anything `PROGRESS.md` already answers.
+  `concepts.html`, `interview_qa.html`, and `walkthrough.html`) **→ this is a resume.**
+  Exactly one → resume it. More than one → ask which, don't guess. Read that project's
+  `PROGRESS.md` first (goal, why this idea, the phase checklist, the friction log — format
+  below), then skim the most recent entries in all three HTML docs to see exactly where
+  things left off. Pick the build loop (section 5) back up at the next unchecked phase.
+  Don't re-run the kickoff or re-ask anything `PROGRESS.md` already answers.
 - **Nothing exists → this is new.** Continue to section 2.
 - **Not sure which?** Just ask — cheaper than guessing wrong.
 
@@ -146,18 +152,20 @@ two adjustments: in section 4, the "phases" describe the project's actual existi
 in whatever order best explains it, not a build order. In section 5, step 3 ("do the actual
 work") means understanding and confirming what's already there instead of writing new code —
 everything else in the loop (research whether each decision still holds up, log the concept,
-log the Q&A, check in) works exactly the same. The one real difference: code rarely explains
-*why* a choice was made, only *what* was chosen, so ask the user directly whenever intent
-isn't inferable from reading it — an unusual pattern, a specific library pick, anything that
-looks deliberate. Their memory of the actual reasoning (and the actual struggles, for the
-friction log) is doing the job that watching the decision happen live would normally do.
+log the Q&A, add the phase's walkthrough beat, check in) works exactly the same. The one real
+difference: code rarely explains *why* a choice was made, only *what* was chosen, so ask the
+user directly whenever intent isn't inferable from reading it — an unusual pattern, a
+specific library pick, anything that looks deliberate. Their memory of the actual reasoning
+(and the actual struggles, for the friction log) is doing the job that watching the decision
+happen live would normally do.
 
 Either way, once the idea is locked (or the existing project is identified): make a short
 kebab-case slug from the title (e.g. "distributed-rate-limiter"), create a folder with that
 name, copy `assets/progress_template.md` into it as `PROGRESS.md`, and fill in the goal and
 idea-rationale sections — for a retroactive project, "why this idea" is simply why it's
-worth documenting now. Everything for this project — `PROGRESS.md`, and shortly the two HTML
-docs — lives in that one folder from here on, which is what keeps this project's files from
+worth documenting now. Everything for this project — `PROGRESS.md`, and shortly the three
+HTML docs — lives in that one folder from here on, which is what keeps this project's files
+from
 colliding with any other project this skill has ever built.
 
 ## 4. Plan the phases
@@ -216,11 +224,19 @@ This is the core of the skill. Repeat per step until the project is done.
    See `references/writing_great_questions.md` for how to write a Trick Question that
    actually teaches something rather than just being clever, and for which General
    questions belong here versus saved for the wrap-up in section 7.
-6. **Check in.** Default to pausing at the end of each step (or after bundling 2-3 small,
-   tightly related steps) — summarize what changed, note that the two docs grew, and wait.
-   If the user says to keep going, chain steps without re-pausing every time, until they say
-   stop or a step surfaces a decision only they can make (budget, hardware, scope). Every
-   third or fourth check-in — not every one, that would just be a different flavor of
+6. **If this step was the last one in its phase, add a beat to `walkthrough.html`.** Not
+   every step — only when a phase actually wraps up. Condense what that phase did into one
+   or two plain, technical sentences: real tool and technique names are expected and good,
+   code and implementation detail are not — that's what `concepts.html` and
+   `interview_qa.html` are for. Write it the way you'd actually say it out loud if someone
+   opened an interview with "walk me through this project." This document only earns its
+   place if it stays short enough to read in a couple of minutes, so resist the pull to log
+   everything that happened — just the beats that belong in the story.
+7. **Check in.** Default to pausing at the end of each step (or after bundling 2-3 small,
+   tightly related steps) — summarize what changed, note which docs grew, and wait. If the
+   user says to keep going, chain steps without re-pausing every time, until they say stop
+   or a step surfaces a decision only they can make (budget, hardware, scope). Every third
+   or fourth check-in — not every one, that would just be a different flavor of
    overwhelming — it's worth spending ten seconds asking the user to try answering one
    earlier question from `interview_qa.html` before you reveal how they did. A little
    retrieval practice spread through the build sticks better than saving all of it for the
@@ -235,7 +251,7 @@ tighten the pacing rather than padding it.
 If a step introduces more than one new concept or decision, add all the resulting entries in
 a single insert into each doc rather than one save per item.
 
-## 6. Keeping the two documents alive
+## 6. Keeping the documents alive
 
 Mechanics, so this stays cheap to do every single step rather than something that gets
 skipped under time pressure:
@@ -248,41 +264,42 @@ skipped under time pressure:
   to touch the design is an explicit ask from the user for a different look, and even then,
   edit the copied file rather than starting over.
 - **"Copy" means a real filesystem copy (e.g. `cp`), not viewing the template and retyping
-  its content into a new file.** The two templates are 200+ lines of CSS and JS each; a
-  single dropped character while reproducing that by hand is enough to silently break the
+  its content into a new file.** The three templates are 150-250+ lines of CSS and JS each;
+  a single dropped character while reproducing that by hand is enough to silently break the
   filters or the quiz button, and it would be easy to not notice. A filesystem copy makes
   that failure mode impossible — the bytes are identical by construction, not by careful
   transcription. Only the placeholder fill-in and later content inserts should ever touch
   the file after that.
 - First use on a project: inside the project's folder (section 3), copy
-  `assets/concepts_template.html` and `assets/qa_template.html` this way, then fill in every
-  `{{PLACEHOLDER}}` in the header (project title, one-line description, start date).
-  `{{PROJECT_TITLE}}` appears twice in each file (the `<title>` tag and the heading), so use
-  a global find-and-replace (e.g. `sed -i`) rather than a single-match edit, or it'll fail on
-  the second occurrence. Read the schema comment near the top of each file — it shows the
-  exact block to copy for a new entry or card. Before writing the first real entries, it's
-  worth reading `references/worked_example.md` too: the schema comments show the *shape*
-  with placeholder text, that file shows what a real step's output actually looks like end
-  to end.
-- Quick sanity check right after that first copy, before moving on: confirm both new files
-  still contain `NEW_ENTRY_INSERTION_POINT` / `NEW_QA_INSERTION_POINT` and the text "Quiz me
-  at random" — if either is missing, the copy went wrong somewhere and should be redone
-  rather than built on top of.
-- Every update after that: `str_replace` the new block in immediately above the marker
-  comment (`NEW_ENTRY_INSERTION_POINT` / `NEW_QA_INSERTION_POINT`). Never regenerate the
-  whole file from scratch — both templates auto-number entries and rebuild their nav/filters
-  from whatever is already in the page, so adding one block is always enough.
-- On a project that's grown long, don't re-read the whole file before every insert just to
+  `assets/concepts_template.html`, `assets/qa_template.html`, and
+  `assets/walkthrough_template.html` this way, then fill in every `{{PLACEHOLDER}}` in each
+  header (project title, one-line description, start date — `walkthrough_template.html` only
+  needs the title). `{{PROJECT_TITLE}}` appears twice in each file (the `<title>` tag and the
+  heading), so use a global find-and-replace (e.g. `sed -i`) rather than a single-match edit,
+  or it'll fail on the second occurrence. Read the schema comment near the top of each file —
+  it shows the exact block to copy for a new entry, card, or beat. Before writing the first
+  real content, it's worth reading `references/worked_example.md` too: the schema comments
+  show the *shape* with placeholder text, that file shows what a real step's output actually
+  looks like end to end, across all three documents.
+- Quick sanity check right after that first copy, before moving on: confirm the three new
+  files still contain `NEW_ENTRY_INSERTION_POINT`, `NEW_QA_INSERTION_POINT`, and
+  `NEW_BEAT_INSERTION_POINT` respectively, and that `interview_qa.html` still has the text
+  "Quiz me at random" — if any of those are missing, the copy went wrong somewhere and
+  should be redone rather than built on top of.
+- Every update after that: `str_replace` the new block in immediately above the relevant
+  marker comment. Never regenerate a whole file from scratch — all three templates
+  auto-number or auto-group their content and rebuild their nav from whatever is already in
+  the page, so adding one block is always enough.
+- On a project that's grown long, don't re-read a whole file before every insert just to
   find the marker — that cost grows for no reason as the document does. Searching for the
   marker text directly gives the exact surroundings `str_replace` needs without re-reading
   everything above it.
 - If it's been a while since the last update — a new session, or several steps since the
   last one — skim the two or three most recent entries before writing new ones. The aim is
-  one document that reads like a single voice throughout, not one with a visible seam where
-  the depth or tone shifts partway through.
-- Re-share the file after any update that touched it (however your environment shows files
-  to the user) so they watch it grow with the project, instead of receiving one large reveal
-  at the end.
+  documents that each read like a single voice throughout, not ones with a visible seam
+  where the depth or tone shifts partway through.
+- Re-share whichever files changed (however your environment shows files to the user) so
+  they watch the project grow, instead of receiving one large reveal at the end.
 
 ## 7. Finishing: the wrap-up pass
 
@@ -292,21 +309,28 @@ built beats none. If the user needs to wrap up early, run this scoped to what ex
 plainly, in the summary, that the project isn't complete — don't skip the pass entirely just
 because the roadmap has unchecked boxes left.
 
-1. Read back through both docs looking for gaps — a decision from an early phase that never
-   got a Q&A entry, a term used later that was never explained, that kind of thing. Fill
-   them in now rather than leaving holes. On a project that took a while, also skim the
-   *earliest* entries specifically for whether they're still accurate — a tool recommended
-   in phase 1 may not still be the best call by the time phase 6 wraps up. Note it if so
-   rather than leaving a stale recommendation standing as if it's still current; an
-   interviewer asking "would you still make that choice today" deserves a real answer.
-2. Add the questions that only make sense once the whole thing exists: walk through the
+1. Read back through `concepts.html` and `interview_qa.html` looking for gaps — a decision
+   from an early phase that never got a Q&A entry, a term used later that was never
+   explained, that kind of thing. Fill them in now rather than leaving holes. On a project
+   that took a while, also skim the *earliest* entries specifically for whether they're
+   still accurate — a tool recommended in phase 1 may not still be the best call by the time
+   phase 6 wraps up. Note it if so rather than leaving a stale recommendation standing as if
+   it's still current; an interviewer asking "would you still make that choice today"
+   deserves a real answer.
+2. Read `walkthrough.html` start to finish, once, as if you were hearing it for the first
+   time. Does it flow as a story someone could follow, or does it read like disconnected
+   fragments stitched together? Smooth any rough transitions between phases. Check the very
+   last phase specifically got its beat — it's the one most likely to be missed, since
+   there's no "next phase" moment to trigger it. If the whole thing takes more than a few
+   minutes to read, it's grown past what it's for — tighten it rather than leaving it long.
+3. Add the questions that only make sense once the whole thing exists: walk through the
    full architecture end to end, why this dataset/stack overall (not just piece by piece),
    the friction-log entry that turned out to matter most and how it got resolved, what
    would change at 10x scale, and at least one "a critic says this is a weakness — defend
    it" question. These are what separate someone who followed instructions from someone who
    owns the project, and an interviewer who only gets one or two questions in tends to ask
    exactly this kind.
-3. Offer a live mock interview: pull questions from `interview_qa.html`, ask them one at a
+4. Offer a live mock interview: pull questions from `interview_qa.html`, ask them one at a
    time in chat, let the user answer first, then compare against the model answer and point
    out anything missing — don't just hand over the file and wish them luck. Log any question
    that was shaky as a "weak spot" in `PROGRESS.md` (date, question, what was missing). If
@@ -322,19 +346,26 @@ because the roadmap has unchecked boxes left.
 - **Honesty over agreement.** If the user's idea isn't the strongest option for their stated
   goal, say so plainly and let them decide anyway — don't quietly build the weaker version
   to avoid the conversation.
-- **The docs grow with the project, not after it.** If a step is done and neither doc
-  changed, ask whether that's really true before moving on.
+- **The docs grow with the project, not after it.** If a step is done and neither
+  `concepts.html` nor `interview_qa.html` changed, ask whether that's really true before
+  moving on. (`walkthrough.html` is the exception — it updates once a phase wraps, not every
+  step; see it going stale across an entire phase is the actual problem to watch for.)
 - **"Production-grade" means what current real systems in this domain actually do** —
   verified by research — not whatever is easiest to explain in a tutorial.
-- **The two docs' design is fixed, not a fresh creative task.** Copy
-  `assets/concepts_template.html` and `assets/qa_template.html`; don't design new ones. This
-  is the difference between the same good result every time and a different, unpredictable
-  one per session.
+- **The docs' design is fixed, not a fresh creative task.** Copy
+  `assets/concepts_template.html`, `assets/qa_template.html`, and
+  `assets/walkthrough_template.html`; don't design new ones. This is the difference between
+  the same good result every time and a different, unpredictable one per session.
 - **Never overwrite an existing project's files.** A copy or write that would clobber
-  `PROGRESS.md`, `concepts.html`, or `interview_qa.html` for a project that already has real
-  content in it is a worse mistake than any pacing or research shortfall above — check
-  first, every time, no exceptions.
+  `PROGRESS.md`, `concepts.html`, `interview_qa.html`, or `walkthrough.html` for a project
+  that already has real content in it is a worse mistake than any pacing or research
+  shortfall above — check first, every time, no exceptions.
 - **No web search available doesn't mean skip the research step.** Say so plainly, reason
   from the most recent well-established practice you're actually confident in, and flag
   which specific claims most need independent verification. A labeled uncertainty is far
   more useful than a confident guess dressed up as current research.
+- **`walkthrough.html` stays plain, technical, and short — no code, ever.** Its entire job
+  is being the thing someone can actually read in a couple of minutes before an interview.
+  A code block, an implementation detail, or a beat added for every single step instead of
+  once per phase all fail it the same way: they turn the one document meant to be short into
+  another reference doc, and it already has two of those.
