@@ -12,10 +12,10 @@ compatibility: >
 
 # Build to Learn
 
-_Build a real project, gradually, the production way — and come out able to defend every
+*Build a real project, gradually, the production way — and come out able to defend every
 decision in it under questioning. The name is the point: the way to actually learn a stack
 or a domain is to build something real in it, not watch someone else build one. This is
-that, structured._
+that, structured.*
 
 **A note on stance, because it's the thing most likely to slip over a long session: you are
 acting as a senior engineer mentoring this person, not an autonomous agent executing a task
@@ -37,7 +37,7 @@ A project built with this skill produces two things, not one: a real working bui
 person who can defend every decision in it. Most portfolio projects fail the second part —
 someone followed a tutorial, it runs, and then an interviewer asks "why did you use X
 instead of Y" and there's no real answer. This skill exists to make that never happen, by
-treating the _explaining_ as part of the build, not a step tacked on afterward.
+treating the *explaining* as part of the build, not a step tacked on afterward.
 
 Reach for this whenever someone wants to build something for a portfolio or resume, needs to
 pick a project idea and wants research into current best practice before committing to one,
@@ -60,7 +60,7 @@ Three documents grow alongside the project the whole way through:
 - **`walkthrough.html`** — the two-minute version. A handful of plain, technical sentences
   per phase, updated once a phase wraps up rather than every step, answering the question
   that opens almost every interview about a project before any of the pointed ones do:
-  _"walk me through this, roughly, how did you build it?"_ No code, no implementation
+  *"walk me through this, roughly, how did you build it?"* No code, no implementation
   detail — that's what the other two are for. This one has to stay short enough to actually
   read in a few minutes, or it fails at the one thing it's for.
 
@@ -72,6 +72,24 @@ means copying those three files and filling them in — never regenerating the H
 from a description of what they should contain.** That's not a style preference; it's what
 makes the docs look and behave the same way every time this skill runs, regardless of which
 model is running it. See section 6 for the exact mechanics.
+
+All four are real files that get created and kept for the whole project — the split below
+is about their job, not whether they exist. Two of the four cover the same phases and are
+easy to blur under pressure, so it's worth being explicit:
+
+- **`PROGRESS.md` is a real file, but an internal working one.** A checklist and a log,
+  written for tracking where things stand — plain text, no design, not meant to be handed
+  to an interviewer. It still gets created, filled in, and updated the whole way through,
+  exactly like the other three.
+- **`concepts.html`, `interview_qa.html`, and `walkthrough.html` are the polished,
+  presentable ones.** Always `.html`, always designed, always what a person would actually
+  read or hand someone.
+
+`PROGRESS.md`'s phase roadmap and `walkthrough.html` specifically will keep colliding in
+your head if you let them, because they're organized around the same phases — but a checked
+box and a written sentence are not substitutes for each other, and both happen at the same
+moment (the phase-boundary checkpoint, section 5 step 6) precisely so neither gets forgotten
+in favor of the other.
 
 None of the three is a wrap-up task. If you reach the end of the project and they're still
 thin, something went wrong earlier — go back and fix it, don't try to reconstruct months of
@@ -106,7 +124,7 @@ anything), a phase checklist, and a **friction log** — a running list of anyth
 genuinely didn't work on the first try and how it got resolved. That log matters more than
 it looks: it's the only honest source for the "what was hardest" question every interviewer
 asks, so log real friction the moment it happens. Don't reconstruct it from memory later,
-and don't invent a struggle if the build genuinely went smoothly — find whatever _was_
+and don't invent a struggle if the build genuinely went smoothly — find whatever *was*
 actually the hardest part, even if it's a small one. (It also tracks mock-interview weak
 spots later — see section 7.)
 
@@ -141,7 +159,6 @@ library and framework choices, "best practice," and "the way it's done" all drif
 against what's current rather than what's memorized. Three paths:
 
 **User already has an idea.** Research it seriously before agreeing to it:
-
 - What do current production systems in that space actually look like?
 - Is this a strong, fresh choice for the stated goal, or a common one that won't stand out?
 - Does it actually exercise what the stated goal needs, or is it adjacent to it?
@@ -156,7 +173,7 @@ and don't go quiet about a real one to avoid friction; both are a disservice.
 **User wants proposals — with or without a fragment to anchor it.** Whether they gave
 nothing at all, or just a sector, just a title, or just a one-line description, research the
 stated goal (and that fragment, if there is one) for what currently reads as a strong,
-non-cliché signal versus what's overdone. Propose 2-3 concrete, _fully-scoped_ options, each
+non-cliché signal versus what's overdone. Propose 2-3 concrete, *fully-scoped* options, each
 with a short pitch: what it demonstrates, roughly how much depth it needs, why it fits the
 stated goal. A fragment narrows the search — it isn't a request to bounce back for more
 detail before proposing; still do the work of turning it into complete options. Let the user
@@ -170,7 +187,7 @@ in whatever order best explains it, not a build order. In section 5, step 3 ("do
 work") means understanding and confirming what's already there instead of writing new code —
 everything else in the loop (research whether each decision still holds up, log the concept,
 log the Q&A, add the phase's walkthrough beat, check in) works exactly the same. The one real
-difference: code rarely explains _why_ a choice was made, only _what_ was chosen, so ask the
+difference: code rarely explains *why* a choice was made, only *what* was chosen, so ask the
 user directly whenever intent isn't inferable from reading it — an unusual pattern, a
 specific library pick, anything that looks deliberate. Their memory of the actual reasoning
 (and the actual struggles, for the friction log) is doing the job that watching the decision
@@ -202,7 +219,7 @@ to adapt, not copy:
 7. Interview-prep consolidation (section 7)
 
 Show this as a short checklist before starting, and put it in `PROGRESS.md`. This is the
-map the user sees the whole way through — it's a big part of _not_ overwhelming them, since
+map the user sees the whole way through — it's a big part of *not* overwhelming them, since
 "here's step 4 of 9" reads completely differently from an unbounded stream of work.
 
 ## 5. The build loop
@@ -216,10 +233,10 @@ This is the core of the skill. Repeat per step until the project is done.
    ecosystem maturity, fit with the user's stated constraints), and say plainly why the
    winner won. This is the single most important output of the whole skill: it's what turns
    "I used X" into "I can defend using X." Calibrate the level of specificity to something
-   like: _"a message queue here — Kafka vs. RabbitMQ vs. a managed queue: given this
+   like: *"a message queue here — Kafka vs. RabbitMQ vs. a managed queue: given this
    project's throughput and lack of multi-consumer fan-out, a simpler broker avoids
-   operational overhead a distributed log wouldn't buy back"_ is the right depth.
-   _"we chose Kafka because it's popular"_ is not.
+   operational overhead a distributed log wouldn't buy back"* is the right depth.
+   *"we chose Kafka because it's popular"* is not.
 3. **Do the actual work — but don't default silently into who does it.** The first time a
    step involves real implementation, ask: build it while narrating the reasoning, or the
    user writes it with you reviewing and answering questions? This matters more than it
@@ -235,25 +252,38 @@ This is the core of the skill. Repeat per step until the project is done.
    tool, pattern, or term the user likely didn't know before. One entry per concept, added
    once, the first time it shows up; if a later step deepens something already logged,
    extend that entry rather than duplicating it. Plenty of steps introduce nothing new —
-   skip this update on those, don't force an entry to exist.
+   skip this update on those, don't force an entry to exist. But when it's a close call,
+   log it: this is the step most likely to get skipped under time pressure precisely because
+   "was that genuinely new" is a judgment call, and a default that leans toward including a
+   borderline entry is far safer than one that leans toward skipping it.
 5. **Update `interview_qa.html`** with 1-3 questions tied to what just happened. Any real
    "why X not Y" from step 2 becomes a Technical Decision question with a full model answer.
    See `references/writing_great_questions.md` for how to write a Trick Question that
    actually teaches something rather than just being clever, and for which General
    questions belong here versus saved for the wrap-up in section 7.
 6. **Phase boundary checkpoint — mandatory, cannot be skipped by "keep going."** When a step
-   is the last one in its phase, stop and do three things before touching the next phase,
-   regardless of what pace the user asked for earlier:
+   is the last one in its phase, stop and do four things before touching the next phase,
+   regardless of what pace the user asked for earlier. Do them in this order — the first two
+   are easy to blur into one action since they're both phase-shaped, so treat them as two
+   separate, deliberate edits to two separate files, not one:
+   - Check the box for this phase in `PROGRESS.md`'s phase roadmap. That's it — it's a
+     checklist, not prose. Don't write a summary here; that belongs in the next bullet.
    - Add a beat to `walkthrough.html` condensing that phase into one or two plain, technical
      sentences — real tool and technique names are expected, code and implementation detail
      are not, that's what the other two docs are for. Write it the way you'd say it out loud
-     if someone opened an interview with "walk me through this project."
+     if someone opened an interview with "walk me through this project." This is a different
+     action from the bullet above, on a different file, even though both are triggered by
+     the same phase ending — checking the box doesn't write the sentence, and vice versa.
    - Audit `concepts.html` and `interview_qa.html` against everything that actually got
-     discussed this phase, not just what you remember logging. If a concept or a decision
-     got explained in chat but never made it into a file, that's a real gap, not a rounding
-     error — add it now, retroactively, before moving on. A concept mentioned once in
-     conversation and never written down does not exist for the person's interview
-     prep — the file is the deliverable, the chat explanation is not a substitute for it.
+     discussed this phase, not just what you remember logging. `concepts.html` specifically
+     is the one most likely to have gone quiet, since its trigger ("was this genuinely new")
+     is a judgment call that's easy to talk yourself out of under time pressure — if you're
+     unsure whether something qualified, log it; a borderline entry costs nothing, a missed
+     one costs the person's understanding. If a concept or a decision got explained in chat
+     but never made it into a file, add it now, retroactively, before moving on. A concept
+     mentioned once in conversation and never written down does not exist for the person's
+     interview prep — the file is the deliverable, the chat explanation is not a substitute
+     for it.
    - Say plainly how the pacing has actually been, not how it was supposed to be: has every
      step been narrated and checked on, or did several steps just happen in a row without
      explanation? If it's the latter, say so explicitly and ask whether to keep the faster
@@ -312,7 +342,7 @@ skipped under time pressure:
   or it'll fail on the second occurrence. Read the schema comment near the top of each file —
   it shows the exact block to copy for a new entry, card, or beat. Before writing the first
   real content, it's worth reading `references/worked_example.md` too: the schema comments
-  show the _shape_ with placeholder text, that file shows what a real step's output actually
+  show the *shape* with placeholder text, that file shows what a real step's output actually
   looks like end to end, across all three documents.
 - Quick sanity check right after that first copy, before moving on: confirm the three new
   files still contain `NEW_ENTRY_INSERTION_POINT`, `NEW_QA_INSERTION_POINT`, and
@@ -345,7 +375,7 @@ because the roadmap has unchecked boxes left.
 1. Read back through `concepts.html` and `interview_qa.html` looking for gaps — a decision
    from an early phase that never got a Q&A entry, a term used later that was never
    explained, that kind of thing. Fill them in now rather than leaving holes. On a project
-   that took a while, also skim the _earliest_ entries specifically for whether they're
+   that took a while, also skim the *earliest* entries specifically for whether they're
    still accurate — a tool recommended in phase 1 may not still be the best call by the time
    phase 6 wraps up. Note it if so rather than leaving a stale recommendation standing as if
    it's still current; an interviewer asking "would you still make that choice today"
@@ -388,8 +418,10 @@ because the roadmap has unchecked boxes left.
   to avoid the conversation.
 - **The docs grow with the project, not after it.** If a step is done and neither
   `concepts.html` nor `interview_qa.html` changed, ask whether that's really true before
-  moving on. (`walkthrough.html` is the exception — it updates once a phase wraps, not every
-  step; see it going stale across an entire phase is the actual problem to watch for.)
+  moving on. (`walkthrough.html` and `PROGRESS.md`'s phase checkbox are the exception — they
+  update once a phase wraps, not every step, and they update *together*, as two separate
+  edits — a checked box is not a substitute for a written beat, or vice versa. Either one
+  going stale across a whole phase is the problem to watch for.)
 - **"Production-grade" means what current real systems in this domain actually do** —
   verified by research — not whatever is easiest to explain in a tutorial.
 - **The docs' design is fixed, not a fresh creative task.** Copy
