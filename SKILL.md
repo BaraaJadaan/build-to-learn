@@ -50,6 +50,12 @@ description above is kept short on purpose — Claude.ai caps skill descriptions
 characters even though the underlying Agent Skills spec allows more — so this paragraph is
 where the fuller trigger picture actually lives.
 
+The kickoff (section 2) figures out how much this particular person actually knows — the
+domain, the specific tools this project will use, and coding itself, rated separately, since
+someone can be strong on one and starting from zero on another. That reading is what decides
+how much gets explained along the way; it never changes how good the finished
+`interview_qa.html` has to be. See `references/calibrating_depth.md` for the full mechanics.
+
 Three documents grow alongside the project the whole way through:
 
 - **`concepts.html`** — every genuinely new idea the build introduces, explained plainly,
@@ -148,8 +154,16 @@ anything the user already answered in how they opened the conversation.
   choice for an ML role and a strong choice for a mobile role look nothing alike.
 - **Any hard constraints?** Hardware limits, a language/stack that's required or off-limits,
   a deadline, anything else non-negotiable.
+- **How comfortable are they with code, and with this field in general?** Two rough
+  self-ratings now — coding fundamentals, and domain/industry familiarity if they already
+  have a sense of what they're building. A third, sharper rating about the *specific* tools
+  this project will use comes right after the idea is locked (end of section 3), since there
+  has to be an idea before there's anything specific to rate. See
+  `references/calibrating_depth.md` for how to gauge these with real confidence instead of
+  taking a single self-label at face value, what each one changes downstream, and how to
+  recalibrate if what you observe later doesn't match what was said here.
 
-That's it. Don't pad this into a longer interview than it needs to be — three answers is
+That's it. Don't pad this into a longer interview than it needs to be — four answers is
 usually enough to start real research.
 
 ## 3. Choosing the idea — always researched, never rubber-stamped
@@ -199,8 +213,15 @@ name, copy `assets/progress_template.md` into it as `PROGRESS.md`, and fill in t
 idea-rationale sections — for a retroactive project, "why this idea" is simply why it's
 worth documenting now. Everything for this project — `PROGRESS.md`, and shortly the three
 HTML docs — lives in that one folder from here on, which is what keeps this project's files
-from
-colliding with any other project this skill has ever built.
+from colliding with any other project this skill has ever built.
+
+Now that there's an actual idea, take the third familiarity rating from the kickoff — how
+familiar is the person with the *specific* tools and practices this project is actually
+going to involve, not the field in general (that was already covered). This one couldn't be
+asked any earlier because there was nothing concrete to ask about yet. Same approach as the
+other two axes: a quick self-rating, refined by how they respond, escalating to a diagnostic
+question only if genuinely unsure — see `references/calibrating_depth.md`. Record all three
+axes in `PROGRESS.md` before moving on to section 4.
 
 ## 4. Plan the phases
 
@@ -236,26 +257,34 @@ This is the core of the skill. Repeat per step until the project is done.
    like: *"a message queue here — Kafka vs. RabbitMQ vs. a managed queue: given this
    project's throughput and lack of multi-consumer fan-out, a simpler broker avoids
    operational overhead a distributed log wouldn't buy back"* is the right depth.
-   *"we chose Kafka because it's popular"* is not.
+   *"we chose Kafka because it's popular"* is not. At low tools/practices familiarity,
+   explain what the alternatives *are* before getting to why one won; at high familiarity,
+   skip straight to the comparison — see `references/calibrating_depth.md`.
 3. **Do the actual work — but don't default silently into who does it.** The first time a
    step involves real implementation, ask: build it while narrating the reasoning, or the
    user writes it with you reviewing and answering questions? This matters more than it
    looks — a working project is the stated goal, but so is genuinely learning the stack, and
-   those pull in different directions if one gets assumed without asking. Carry whichever
-   answer forward as the default for the rest of the project, but stay open to switching
-   per-step if the user wants to (typing the boilerplate themselves but having you drive a
-   tricky algorithm is a completely reasonable split). Either way, the
-   research-and-documentation half of a step works the same. (Retroactive documentation: this
-   step means reading and understanding the existing code for that phase instead of writing
-   anything new — the question above doesn't apply, there's nothing to hand off.)
+   those pull in different directions if one gets assumed without asking. At low coding-
+   fundamentals familiarity, lean hard toward building it yourself with detailed narration —
+   a genuine beginner hand-writing raw code is "overwhelming," not "gradual." At higher
+   fundamentals, this question is fully open either way. Carry whichever answer forward as
+   the default for the rest of the project, but stay open to switching per-step if the user
+   wants to (typing the boilerplate themselves but having you drive a tricky algorithm is a
+   completely reasonable split). Either way, the research-and-documentation half of a step
+   works the same. (Retroactive documentation: this step means reading and understanding the
+   existing code for that phase instead of writing anything new — the question above doesn't
+   apply, there's nothing to hand off.)
 4. **Update `concepts.html`** if this step introduced a genuinely new idea — a technique,
-   tool, pattern, or term the user likely didn't know before. One entry per concept, added
-   once, the first time it shows up; if a later step deepens something already logged,
-   extend that entry rather than duplicating it. Plenty of steps introduce nothing new —
-   skip this update on those, don't force an entry to exist. But when it's a close call,
-   log it: this is the step most likely to get skipped under time pressure precisely because
-   "was that genuinely new" is a judgment call, and a default that leans toward including a
-   borderline entry is far safer than one that leans toward skipping it.
+   tool, pattern, or term the user likely didn't know before. "Genuinely new" is relative to
+   the person, not some fixed technical bar: at low coding-fundamentals familiarity this
+   includes syntax-level things that would normally be too basic to log — what a decorator
+   is, what a status code means — because for this person it genuinely is new. One entry per
+   concept, added once, the first time it shows up; if a later step deepens something
+   already logged, extend that entry rather than duplicating it. Plenty of steps introduce
+   nothing new — skip this update on those, don't force an entry to exist. But when it's a
+   close call, log it: this is the step most likely to get skipped under time pressure
+   precisely because "was that genuinely new" is a judgment call, and a default that leans
+   toward including a borderline entry is far safer than one that leans toward skipping it.
 5. **Update `interview_qa.html`** with 1-3 questions tied to what just happened. Any real
    "why X not Y" from step 2 becomes a Technical Decision question with a full model answer.
    See `references/writing_great_questions.md` for how to write a Trick Question that
@@ -304,7 +333,11 @@ This is the core of the skill. Repeat per step until the project is done.
    from `interview_qa.html` before you reveal how they did. A little retrieval practice
    spread through the build sticks better than saving all of it for the wrap-up mock
    interview. Treat it as a bonus, not a gate — skip it without a second thought if the
-   user's mid-flow on something else.
+   user's mid-flow on something else. The first time this comes up, mention plainly that
+   it's optional and what skipping it trades away (the files stop being something verified
+   as reproducible out loud, and become just text) — if the user opts out here or later,
+   record that in `PROGRESS.md` and don't offer it again this project; if they don't opt
+   out, it stays on by default without needing to ask each time.
 
 A step is right-sized when it introduces at most one or two new concepts and lands one
 coherent, checkable piece of progress. If a step is explaining three unrelated things at
@@ -393,13 +426,16 @@ because the roadmap has unchecked boxes left.
    it" question. These are what separate someone who followed instructions from someone who
    owns the project, and an interviewer who only gets one or two questions in tends to ask
    exactly this kind.
-4. Offer a live mock interview: pull questions from `interview_qa.html`, ask them one at a
-   time in chat, let the user answer first, then compare against the model answer and point
-   out anything missing — don't just hand over the file and wish them luck. Log any question
-   that was shaky as a "weak spot" in `PROGRESS.md` (date, question, what was missing). If
-   this isn't the first mock interview for this project, start from what was weak last time
-   rather than going in document order — the second pass should feel different from the
-   first, not identical.
+4. If verification wasn't opted out earlier (check `PROGRESS.md`), offer a live mock
+   interview: pull questions from `interview_qa.html`, ask them one at a time in chat, let
+   the user answer first, then compare against the model answer and point out anything
+   missing — don't just hand over the file and wish them luck. Log any question that was
+   shaky as a "weak spot" in `PROGRESS.md` (date, question, what was missing). If this isn't
+   the first mock interview for this project, start from what was weak last time rather than
+   going in document order — the second pass should feel different from the first, not
+   identical. If verification *was* opted out and this is the first time the wrap-up pass is
+   running, that's a reasonable moment to ask once more whether they've changed their mind
+   now that the project's actually done — but take no for an answer and move on.
 
 ## 8. Non-negotiables
 
@@ -441,3 +477,12 @@ because the roadmap has unchecked boxes left.
   A code block, an implementation detail, or a beat added for every single step instead of
   once per phase all fail it the same way: they turn the one document meant to be short into
   another reference doc, and it already has two of those.
+- **Depth changes the path, never the destination.** A beginner gets more scaffolding, more
+  concepts.html entries, syntax explained where an expert wouldn't need it — but the finished
+  `interview_qa.html` is held to the same real interview standard regardless of where the
+  person started. "They're new to this" is a reason to explain more along the way, never a
+  reason to file a weaker answer.
+- **Verification defaults on, and an opt-out is a recorded choice, not a silent one.**
+  Skipping the mock interview or the retrieval-practice check-ins is the user's call to make,
+  but it doesn't happen by drift or by the AI deciding someone "seems experienced enough" —
+  it happens because they said so, once, and it's written down in `PROGRESS.md`.

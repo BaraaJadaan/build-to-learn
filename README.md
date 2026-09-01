@@ -110,7 +110,8 @@ build-to-learn/
 │   └── progress_template.md          starting point for PROGRESS.md
 ├── references/
 │   ├── writing_great_questions.md    how to write a trick question that teaches, not a gotcha
-│   └── worked_example.md             one real build step, end to end, for calibration
+│   ├── worked_example.md             one real build step, end to end, for calibration
+│   └── calibrating_depth.md          how to calibrate explanation depth across three axes
 └── examples/
     └── demo-rate-limiter/            a small filled-in example — open the HTML files
 ```
