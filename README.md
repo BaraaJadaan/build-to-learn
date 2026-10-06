@@ -46,23 +46,31 @@ it.
    fragment of one (just a sector, a title, or a one-line description), a blank page you
    want researched options for, or an already-built project that just needs the
    interview-readiness layer added retroactively.
-2. **Idea, checked, not rubber-stamped.** If you have an idea, it gets researched before
+2. **Depth calibration.** Rates familiarity on three separate axes — the domain, the
+   specific tools this project will use, and coding itself — because knowing a field and
+   knowing its current tooling aren't the same thing, and neither has anything to do with
+   whether you can code. Self-rated, refined by how you actually respond as you go, not
+   locked in from one answer. This changes how much gets explained along the way; it never
+   changes the standard the finished `interview_qa.html` is held to.
+3. **Idea, checked, not rubber-stamped.** If you have an idea, it gets researched before
    it's agreed to — and if a genuinely stronger angle turns up, the skill says so plainly
    and lets you choose, rather than quietly building the weaker version.
-3. **A visible phase roadmap**, so the project is never an unbounded stream of work.
-4. **The build loop.** For every real technical decision, at least two real alternatives get
+4. **A visible phase roadmap**, so the project is never an unbounded stream of work.
+5. **The build loop.** For every real technical decision, at least two real alternatives get
    compared on the dimensions that actually matter, and the reasoning is written down — this
    is the part that turns "I used X" into "I can defend using X." The first time real
    implementation comes up, it asks whether to build it for you while narrating, or let you
    write it with it reviewing — a working project matters, but so does hands-on practice
-   with the stack, and those aren't always the same thing. Each step is sized to introduce
-   at most one or two new ideas at a time; `concepts.html` and `interview_qa.html` grow
-   alongside the code as those ideas and decisions come up, and `walkthrough.html` picks up
-   one short beat each time a phase wraps.
-5. **Wrap-up.** A pass that fills any gaps, adds the questions that only make sense once the
+   with the stack, and those aren't always the same thing (at low coding familiarity this
+   defaults toward the AI building it, since writing raw code as a beginner is overwhelming,
+   not gradual). Each step is sized to introduce at most one or two new ideas at a time;
+   `concepts.html` and `interview_qa.html` grow alongside the code as those ideas and
+   decisions come up, and `walkthrough.html` picks up one short beat each time a phase wraps.
+6. **Wrap-up.** A pass that fills any gaps, adds the questions that only make sense once the
    whole project exists, and offers a live mock interview pulled straight from
    `interview_qa.html` — one that remembers which questions were shaky last time and starts
-   there.
+   there. (Verification like this defaults to on but can be turned off if you'd rather skip
+   it — that choice gets recorded, not just assumed.)
 
 The full logic lives in [`SKILL.md`](SKILL.md) — it's written to be read, not just executed.
 
@@ -111,7 +119,7 @@ build-to-learn/
 ├── references/
 │   ├── writing_great_questions.md    how to write a trick question that teaches, not a gotcha
 │   ├── worked_example.md             one real build step, end to end, for calibration
-│   └── calibrating_depth.md          how to calibrate explanation depth across three axes
+│   └── calibrating_depth.md          how the three familiarity axes work, and what they change
 └── examples/
     └── demo-rate-limiter/            a small filled-in example — open the HTML files
 ```
@@ -148,6 +156,19 @@ A few decisions that aren't obvious from skimming `SKILL.md`, in case you're ext
 - **Retroactive documentation reuses the same build loop**, just pointed at reading existing
   code instead of writing new code. It doesn't duplicate the whole workflow for that case —
   see the end of section 3 in `SKILL.md`.
+- **Familiarity is three separate axes, not one skill level.** Domain knowledge, tool/
+  practice knowledge, and coding fundamentals don't move together — someone can have any
+  combination of the three. Collapsing that into a single "beginner/expert" dial would lose
+  exactly the distinction that decides what actually needs explaining.
+- **Depth changes the road, not the destination, on purpose.** Someone who already knows
+  the material shouldn't be forced through explanations they don't need — but the finished
+  `interview_qa.html` is held to the same real standard regardless of starting point.
+  Verification (the mock interview, the retrieval-practice check-ins) defaults to *on* for
+  the same reason: it's what keeps the files tied to something the person can actually back
+  up, rather than text that looks the part. It can be turned off — that's a real choice
+  people are entitled to make about their own prep — but it's an explicit, recorded opt-out,
+  never something the AI decides to skip on someone's behalf because they claimed a high
+  familiarity level.
 
 ## License
 
